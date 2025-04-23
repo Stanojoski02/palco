@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="text-align: center; padding: 40px 20px;">
+    <h2 style="font-size: 32px; color: #2e7d32; margin-bottom: 10px;">
+        🐾 Добредојдовте во <span style="font-weight: bold;">Пет Шоп Палчо</span>
+    </h2>
+    <p style="font-size: 18px; color: #555;">
+        Изберете една од нашите подружници за да ги разгледате производите што ги нудиме:
+    </p>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    {% for branch in branches %}
+    <div style="background: #ffffff; border: 1px solid #ccc; border-radius: 10px; padding: 20px; width: 280px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;">
+        <h3 style="color: #4caf50; margin-bottom: 10px;">{{ branch.name }}</h3>
+        <p style="color: #555;">{{ branch.address }}</p>
+        <a href="{{ url_for('product_list') }}?branch_id={{ branch.id }}"
+           style="display: inline-block; margin-top: 10px; padding: 10px 15px; background-color: #4caf50; color: white; border-radius: 5px; text-decoration: none;">
+            🔍 Разгледај производи
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

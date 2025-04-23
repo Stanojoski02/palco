@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <title>Пет Шоп Палчо</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>🐾 Пет Шоп Палчо</h1>
+        <nav>
+            <a href="{{ url_for('home') }}">Дома</a>
+            <a href="{{ url_for('product_list') }}">Производи</a>
+            {% if session.get('user') %}
+                <a href="{{ url_for('add_product') }}">➕ Нов производ</a>
+                <a href="{{ url_for('logout') }}">Одјава</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Најава</a>
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul class="flash">
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

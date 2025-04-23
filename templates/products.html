@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>📦 Производи од {{ branch_name }}</h2>
+<p><strong>Датум:</strong> {{ current_date }}</p>
+<table class="product-table">
+    <thead>
+        <tr>
+            <th>ID</th><th>Назив</th><th>Продажна цена</th><th>Редовна цена</th><th>Попуст</th><th>Опис</th><th>Подружница</th>
+            {% if session.get('user') %}<th>Акции</th>{% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for p in products %}
+        <tr>
+            <td>{{ p.id }}</td><td>{{ p.name }}</td><td>{{ p.price }}</td><td>{{ p.regular_price }}</td><td>{{ p.discount_price }}</td><td>{{ p.description }}</td>
+            <td>{{ p.branch_id }}</td>
+            {% if session.get('user') %}
+            <td>
+                <a href="{{ url_for('edit_product', product_id=p.id) }}">✏️</a>
+                <a href="{{ url_for('delete_product', product_id=p.id) }}" onclick="return confirm('Сигурни?')">🗑️</a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

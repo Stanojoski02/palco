@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🔐 Најава</h2>
+
+<form method="post" class="login-form">
+    <table>
+        <tr>
+            <td><label for="username">Корисничко име:</label></td>
+            <td><input type="text" name="username" id="username" required></td>
+        </tr>
+        <tr>
+            <td><label for="password">Лозинка:</label></td>
+            <td><input type="password" name="password" id="password" required></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align: right;">
+                <button type="submit">➡️ Најави се</button>
+            </td>
+        </tr>
+    </table>
+</form>
+{% endblock %}

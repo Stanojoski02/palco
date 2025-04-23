@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 style="text-align: center; margin-top: 20px;">➕ Додај нов производ</h2>
+
+<form method="post" style="max-width: 600px; margin: 30px auto; background: #fff; padding: 25px 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);">
+    <div style="margin-bottom: 15px;">
+        <label for="name"><strong>Назив на производ:</strong></label><br>
+        <input type="text" name="name" id="name" required style="width: 100%; padding: 8px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="price"><strong>Продажна цена:</strong></label><br>
+        <input type="number" name="price" id="price" step="0.01" required style="width: 100%; padding: 8px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="regular_price"><strong>Редовна цена:</strong></label><br>
+        <input type="number" name="regular_price" id="regular_price" step="0.01" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="discount_price"><strong>Цена со попуст:</strong></label><br>
+        <input type="number" name="discount_price" id="discount_price" step="0.01" style="width: 100%; padding: 8px;">
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="description"><strong>Опис на производ:</strong></label><br>
+        <textarea name="description" id="description" rows="3" style="width: 100%; padding: 8px;"></textarea>
+    </div>
+
+    <div style="margin-bottom: 15px;">
+        <label for="branch_id"><strong>Подружница:</strong></label><br>
+        <select name="branch_id" id="branch_id" required style="width: 100%; padding: 8px;">
+            {% for b in branches %}
+                <option value="{{ b.id }}">{{ b.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div style="text-align: right;">
+        <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
+            💾 Зачувај производ
+        </button>
+    </div>
+</form>
+{% endblock %}
