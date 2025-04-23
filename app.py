@@ -39,20 +39,6 @@ def init_db():
             discount_price REAL,
             description TEXT,
             branch_id INTEGER REFERENCES branches(id))''')
-
-        cur.execute("SELECT COUNT(*) FROM branches")
-        if cur.fetchone()['count'] == 0:
-            cur.executemany("INSERT INTO branches (name, address) VALUES (%s, %s)", [
-                ('Пет Шоп Палчо бр. 1', 'ул.Киро Крстев бр. 1'),
-                ('Пет Шоп Палчо бр. 2', 'ул. Пионерска бр. 11'),
-                ('Пет Шоп Палчо бр. 3', 'ул. Илинденска бр. 13')
-            ])
-
-        cur.execute("SELECT COUNT(*) FROM users WHERE username = %s", ('adminpalco',))
-        if cur.fetchone()['count'] == 0:
-            cur.execute("INSERT INTO users (username, password) VALUES (%s, %s)",
-                        ('adminpalco', 'adminpalco123'))
-
         conn.commit()
         conn.close()
     except Exception as e:
