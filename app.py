@@ -3,6 +3,10 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 from functools import wraps
 from datetime import datetime
+from flask import send_file
+import openpyxl
+from io import BytesIO
+
 
 app = Flask(__name__)
 app.secret_key = 'tajna_lozinka'
@@ -199,6 +203,54 @@ def delete_product(product_id):
     conn.commit()
     conn.close()
     return redirect(url_for('product_list'))
+
+@app.route('/download-products')
+@login_required
+def download_products():
+    try:
+        branch_id = request.args.get('branch_id')
+        if branch_id:
+            flash("Може да ги симнеш само сите производи заедно.")
+            return redirect(url_for('product_list', branch_id=branch_id))
+
+        conn = get_db()
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT products.id, products.name, products.price, products.regular_price,
+                   products.discount_price, products.description, branches.name AS branch_name
+            FROM products
+            JOIN branches ON products.branch_id = branches.id
+        """)
+        products = cursor.fetchall()
+        conn.close()
+
+        wb = openpyxl.Workbook()
+        ws = wb.active
+        ws.title = "Производи"
+
+        # Заглавија
+        headers = ['ID', 'Назив', 'Продажна цена', 'Редовна цена', 'Цена со попуст', 'Опис', 'Подружница']
+        ws.append(headers)
+
+        # Податоци
+        for p in products:
+            ws.append([
+                p['id'], p['name'], p['price'], p['regular_price'],
+                p['discount_price'], p['description'], p['branch_name']
+            ])
+
+        # Excel во меморија
+        output = BytesIO()
+        wb.save(output)
+        output.seek(0)
+
+        return send_file(output,
+                         download_name="proizvodi.xlsx",
+                         as_attachment=True,
+                         mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    except Exception as e:
+        flash(f"Грешка при симнување: {e}")
+        return redirect(url_for('product_list'))
 
 if __name__ == '__main__':
     init_db()
